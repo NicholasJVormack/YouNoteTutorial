@@ -1,5 +1,5 @@
 const express = require('express');
-const router = express.router();
+const router = express.Router();
 const bcrypt = require('bcryptjs'); //hash users passwords
 const jwt = require('jsonwebtoken'); //authenticate users without relogging auth token
 
@@ -38,11 +38,11 @@ router.post("/", async (req, res) => {
     });
 })
 
-router.post("/logic", (req, res) => {
+router.post("/login", (req, res) => {
     const { username, password } = req.body;
     User.findOne({username})
     .then(user => {
-        if (!user) {
+        if(!user) {
             res.status(500).json({msg: "No User with that username: " + username});
             return;
         } else if(!bcrypt.compareSync(password, user.passwordHash)) {
@@ -50,7 +50,7 @@ router.post("/logic", (req, res) => {
         }
 
         jwt.sign({
-            username: newUser.username
+            username: user.username
         }, 'secret', (err, token) => {
             if(err) throw err;
             res.send({
@@ -64,6 +64,6 @@ router.post("/logic", (req, res) => {
         console.log(err);
         res.status(500).send(err);
     });
+});
 
-
-})
+module.exports = router;

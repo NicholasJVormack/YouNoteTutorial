@@ -24,5 +24,6 @@ app.all('/api/*', auth);
 
 app.use('/api/notes', require('./routes/notes'));
 app.use('/api/auth', require('./routes/auth'));
+
 //listening on port 3000, with a call back Listening on Port 3000
 app.listen(API_PORT, () => console.log(`Listening on Port  ${API_PORT}`));

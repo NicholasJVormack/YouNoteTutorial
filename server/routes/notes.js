@@ -48,3 +48,5 @@ router.delete("/:id", (req, res) => {
     .then(() => res.json({msg:"Message Deleted"}))
     .catch(() => res.json({msg: "Could not find note to delete."}));
 });
+
+module.exports = router;

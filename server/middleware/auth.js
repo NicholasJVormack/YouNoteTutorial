@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 const auth = (req, res, next) => {
-    let publicURL = [
+    let publicURLS = [
         {url: '/api/auth/', method: 'POST'}
     ]
 
@@ -34,3 +34,4 @@ const auth = (req, res, next) => {
         res.status(400).json({msg: "Token is not valid."});
     }
 }
+module.exports = auth;
