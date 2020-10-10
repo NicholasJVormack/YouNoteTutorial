@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const note = require('./models/note');
+const auth = require('./middleware/auth');
 const app = express();
 
 const API_PORT = process.env.PORT || 8080;
@@ -19,24 +20,10 @@ mongoose.connect(dbPath, {
 
 }).catch((err) => console.log("Error connecting to the database."));
 
-app.post("/", (req, res) => {
-    const {title, author, body} = req.body;
+app.all('/api/*', auth);
 
-    let newNote = new note({
-        title,
-        author,
-        body
-    });
+app.use('/api/notes', require('./routes/notes'));
+app.use('/api/auth', require('./routes/auth'));
 
-    newNote
-    .save()
-    .then((note) => {
-        console.log("Note Saved");
-        res.json(note);
-    }).catch(err => {
-        console.log("Error saving the note.")
-        res.send("Error.");
-    });
-});
 //listening on port 3000, with a call back Listening on Port 3000
 app.listen(API_PORT, () => console.log(`Listening on Port  ${API_PORT}`));
